@@ -59,6 +59,7 @@ public class BotInitializer {
         // Registra os comandos globalmente
         jda.updateCommands().addCommands(commandDataList).queue();
 
+        System.out.println("Iniciado como: " + jda.getSelfUser().getName());
         System.out.println("Bot iniciado e comandos registrados automaticamente!");
     }
 }
