@@ -9,7 +9,7 @@ public class ErrorEmbedUtil {
     // Método para criar um Embed de erro
     public static MessageEmbed errorMessage(String error) {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("❌ | " + error);
+        embedBuilder.setDescription("**❌ | " + error + "**");
         embedBuilder.setColor(java.awt.Color.decode("#d22b2b"));
         return embedBuilder.build();
     }
