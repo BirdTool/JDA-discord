@@ -1,0 +1,18 @@
+<configuration>
+    <!-- Appender para saída no console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Logger para o seu pacote, apenas ERROR -->
+    <logger name="bot" level="ERROR">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- Silenciar tudo exceto ERROR -->
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

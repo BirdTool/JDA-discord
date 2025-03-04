@@ -26,12 +26,10 @@ public class ErrorEmbedUtil {
              .setEphemeral(true)
              .queue(); // Envia a mensagem
     }
-
-    // Método para criar um Embed de aviso
-    public static MessageEmbed warningMessage(String error) {
-        EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription(error);
-        embedBuilder.setColor(java.awt.Color.decode("#f7d33e"));
-        return embedBuilder.build();
-    }
 }
+
+/*
+ * Use errorMessage para atualizar deferReply com uma mensagem de erro.
+ * Use sendErrorMessage caso não use deferReply
+ * Use sendErrorMessageButton para responder com erro interações de botões
+ */

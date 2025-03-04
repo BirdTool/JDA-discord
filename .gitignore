@@ -1,2 +1,7 @@
 /target
 .env
+bot-discord-1.0-SNAPSHOT-jar-with-dependencies.jar
+app.jar
+discloud.config
+.discloudignore
+database.db
