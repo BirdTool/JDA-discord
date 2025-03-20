@@ -1,11 +1,13 @@
 package bot.features.events;
 
-import bot.base.RegisterCommand;
+import bot.base.RegisterEvent;
+import bot.base.EventHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 
-@RegisterCommand
-public class OnMessageDelete extends ListenerAdapter {
+@RegisterEvent
+public class OnMessageDelete extends ListenerAdapter implements EventHandler {
+    @Override
     public void onMessageDelete(MessageDeleteEvent event) {
         System.out.println("Mensagem deletada: " + event.getMessageId());
         try {
@@ -15,5 +17,15 @@ public class OnMessageDelete extends ListenerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    @Override
+    public Class<?> getEventType() {
+        return MessageDeleteEvent.class;
+    }
+    
+    @Override
+    public String getEventDescription() {
+        return "Manipulador de exclusão de mensagens";
     }
 }

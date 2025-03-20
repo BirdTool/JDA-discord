@@ -1,10 +1,11 @@
 package bot.features.commands;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
+import bot.base.Command;
 import bot.base.EasyEmbedUtil;
 import bot.base.RegisterCommand;
 
@@ -13,20 +14,20 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 @RegisterCommand
-public class Counter extends ListenerAdapter {
+public class Counter implements Command {
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("contar")) return;
-
+    public void execute(SlashCommandInteractionEvent event) {
         event.deferReply(true).queue(); // Evita timeout
-
+        
         new Thread(() -> { // Executa a contagem em uma thread separada
             int number = 0;
             long startTime = System.currentTimeMillis();
-
+            int seconds = event.getOption("número") != null ? event.getOption("número").getAsInt() : 1;
+            long timeLimit = seconds * 1000;
+            
             // Conta o máximo possível em 1 segundo
-            while (System.currentTimeMillis() - startTime < 1000) {
+            while (System.currentTimeMillis() - startTime < timeLimit) {
                 number++;
             }
 
@@ -46,8 +47,12 @@ public class Counter extends ListenerAdapter {
         }).start();
     }
 
+    @Override
     public SlashCommandData getCommandData() {
-        return Commands.slash("contar", "Conta até o máximo possível em 1 segundo");
+        return Commands.slash("contar", "Conta até o máximo possível em determinado segundo")
+            .addOptions(new net.dv8tion.jda.api.interactions.commands.build.OptionData(OptionType.INTEGER, "número", "Segundos para terminar a contagem", false)
+                .setMinValue(1)
+                .setMaxValue(15));
     }
 
     // Método para formatar com separadores de milhar (ex: 9.496.553)

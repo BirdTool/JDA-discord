@@ -2,7 +2,6 @@ package bot.features.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
@@ -10,16 +9,16 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import java.awt.Color;
 
 import bot.base.Store;
+import bot.base.Command;
 import bot.base.ErrorEmbedUtil;
 import bot.base.RegisterCommand;
 
 @RegisterCommand
-public class ExemploCommand extends ListenerAdapter {
+public class ExemploCommand implements Command {
     private final Store<Long> cooldownStore = new Store<>();
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("exemplo")) return;
+    public void execute(SlashCommandInteractionEvent event) {
         String userId = event.getUser().getId();
 
         // Verifica se o usuário está em cooldown

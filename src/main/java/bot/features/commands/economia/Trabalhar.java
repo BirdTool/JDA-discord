@@ -2,7 +2,7 @@ package bot.features.commands.economia;
 
 import bot.base.ErrorEmbedUtil;
 import bot.base.RegisterCommand;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import bot.base.SubCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,15 +14,26 @@ import bot.Services.Database.DbManager;
 import bot.Services.Database.DbManager.UserData;
 
 @RegisterCommand
-public class Trabalhar extends ListenerAdapter {
+public class Trabalhar implements SubCommand {
     private static final long COOLDOWN_DURATION = 1000L * 60 * 60 * 24; // 24 horas em milissegundos
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("rpg")) return;
-        if (!event.getSubcommandGroup().equals("economia")) return;
-        if (!event.getSubcommandName().equals("trabalhar")) return;
+    public String getMainCommandName() {
+        return "rpg";
+    }
 
+    @Override
+    public String getSubcommandGroup() {
+        return "economia";
+    }
+
+    @Override
+    public String getSubcommandName() {
+        return "trabalhar";
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
         String userId = event.getUser().getId();
         event.deferReply().queue();
 

@@ -1,7 +1,7 @@
 package bot.features.commands.economia;
 
 import bot.base.RegisterCommand;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import bot.base.SubCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
@@ -12,12 +12,24 @@ import bot.base.EasyEmbedUtil;
 import bot.base.ErrorEmbedUtil;
 
 @RegisterCommand
-public class Saldo extends ListenerAdapter {
+public class Saldo implements SubCommand {
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("rpg")) return;
-        if (!event.getSubcommandGroup().equals("economia")) return;
-        if (!event.getSubcommandName().equals("saldo")) return;
+    public String getMainCommandName() {
+        return "rpg";
+    }
+
+    @Override
+    public String getSubcommandGroup() {
+        return "economia";
+    }
+
+    @Override
+    public String getSubcommandName() {
+        return "saldo";
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
 
         event.deferReply().queue();
 

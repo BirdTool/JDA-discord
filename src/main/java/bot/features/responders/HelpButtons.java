@@ -2,18 +2,27 @@ package bot.features.responders;
 
 import bot.base.ButtonIdSeparator;
 import bot.base.ErrorEmbedUtil;
+import bot.base.InteractionHandler;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import bot.features.menus.HelpMenu;
 import bot.base.MenuResponse;
 import bot.base.RegisterCommand;
 
 @RegisterCommand
-public class HelpButtons extends ListenerAdapter {
+public class HelpButtons implements InteractionHandler<ButtonInteractionEvent> {
+    @Override
+    public String getInteractionId() {
+        return "helpMenu/*";
+    }
 
     @Override
-    public void onButtonInteraction(ButtonInteractionEvent event) {
+    public InteractionType getInteractionType() {
+        return InteractionType.BUTTON;
+    }
+
+    @Override
+    public void handleInteraction(ButtonInteractionEvent event) {
         String buttonId = event.getComponentId();
 
         try {

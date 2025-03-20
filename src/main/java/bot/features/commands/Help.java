@@ -4,14 +4,14 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import bot.base.Command;
 import bot.base.MenuResponse;
 import bot.base.RegisterCommand;
 import bot.features.menus.HelpMenu;
 
 @RegisterCommand
-public class Help extends ListenerAdapter {
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (!event.getName().equals("help")) return;
+public class Help implements Command {
+    public void execute(SlashCommandInteractionEvent event) {
         MenuResponse message = HelpMenu.MenuHelp(0);
 
         event.replyEmbeds(message.getEmbed())

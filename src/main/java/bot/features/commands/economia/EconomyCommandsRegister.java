@@ -1,16 +1,18 @@
 package bot.features.commands.economia;
 
 import bot.base.RegisterCommand;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import bot.base.Command;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandGroupData;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 @RegisterCommand
-public class EconomyCommandsRegister extends ListenerAdapter {
+public class EconomyCommandsRegister implements Command {
+    @Override
     public SlashCommandData getCommandData() {
         return Commands.slash("rpg", "Comandos de rpg").addSubcommandGroups(
             new SubcommandGroupData("economia", "comandos de economia").addSubcommands(
@@ -20,5 +22,12 @@ public class EconomyCommandsRegister extends ListenerAdapter {
                 )
             )
         );
+    }
+
+    @Override
+    public void execute(SlashCommandInteractionEvent event) {
+        // Este método não será chamado diretamente, pois os subcomandos serão redirecionados
+        // para suas próprias implementações
+        event.reply("Por favor, use um dos subcomandos disponíveis.").setEphemeral(true).queue();
     }
 }

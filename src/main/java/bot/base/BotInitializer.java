@@ -2,47 +2,57 @@ package bot.base;
 
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.EventListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import bot.base.RegisterEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BotInitializer {
-
+    private static CommandManager commandManager = new CommandManager();
+    private static InteractionManager interactionManager = new InteractionManager();
+    private static EventManager eventManager = new EventManager();
+    
     public static void startBot(String token) {
         JDABuilder bot = JDABuilder.createDefault(token);
-
-        // Lista para armazenar os dados dos comandos
-        List<SlashCommandData> commandDataList = new ArrayList<>();
+        
+        // Adiciona os gerenciadores como listeners
+        bot.addEventListeners(commandManager);
+        bot.addEventListeners(interactionManager);
 
         // Pacote onde as classes estão localizadas
         String packageName = "bot.features";
 
         try {
-            // Escaneia o pacote em busca de classes anotadas com @RegisterCommand
-            List<Class<?>> classes = ClassScanner.getClassesWithAnnotation(packageName, RegisterCommand.class);
-
-            for (Class<?> clazz : classes) {
-                // Verifica se a classe é um ListenerAdapter
-                if (ListenerAdapter.class.isAssignableFrom(clazz)) {
-                    // Cria uma instância da classe e a adiciona como listener
+            // Escaneia o pacote em busca de classes anotadas
+            List<Class<?>> commandClasses = ClassScanner.getClassesWithAnnotation(packageName, RegisterCommand.class);
+            List<Class<?>> eventClasses = ClassScanner.getClassesWithAnnotation(packageName, RegisterEvent.class);
+            
+            // Processa as classes de comando
+            for (Class<?> clazz : commandClasses) {
+                // Verifica se a classe implementa Command
+                if (Command.class.isAssignableFrom(clazz)) {
+                    Command command = (Command) clazz.getDeclaredConstructor().newInstance();
+                    commandManager.registerCommand(command);
+                }
+                // Verifica se a classe implementa InteractionHandler
+                else if (InteractionHandler.class.isAssignableFrom(clazz)) {
+                    InteractionHandler<?> handler = (InteractionHandler<?>) clazz.getDeclaredConstructor().newInstance();
+                    interactionManager.registerHandler(handler);
+                }
+                // Para compatibilidade com código existente
+                else if (ListenerAdapter.class.isAssignableFrom(clazz)) {
                     ListenerAdapter listener = (ListenerAdapter) clazz.getDeclaredConstructor().newInstance();
-                    bot.addEventListeners(listener);
-
-                    // Verifica se a classe é um comando (tem o método getCommandData)
-                    try {
-                        if (clazz.getMethod("getCommandData") != null) {
-                            SlashCommandData commandData = (SlashCommandData) clazz.getMethod("getCommandData").invoke(listener);
-                            commandDataList.add(commandData);
-                            System.out.println("Comando registrado: " + commandData.getName());
-                        } else {
-                            System.out.println("Listener carregado: " + clazz.getSimpleName());
-                        }
-                    } catch (NoSuchMethodException e) {
-                        // Se a classe não tiver o método getCommandData, apenas registra como listener
-                        System.out.println("Listener carregado: " + clazz.getSimpleName());
-                    }
+                    eventManager.registerEventListener(listener);
+                }
+            }
+            
+            // Processa as classes de evento
+            for (Class<?> clazz : eventClasses) {
+                if (EventListener.class.isAssignableFrom(clazz)) {
+                    EventListener listener = (EventListener) clazz.getDeclaredConstructor().newInstance();
+                    eventManager.registerEventListener(listener);
                 }
             }
         } catch (Exception e) {
@@ -55,9 +65,12 @@ public class BotInitializer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        
+        // Registra todos os manipuladores de eventos
+        eventManager.registerAllListeners(jda);
 
         // Registra os comandos globalmente
-        jda.updateCommands().addCommands(commandDataList).queue();
+        jda.updateCommands().addCommands(commandManager.getCommandsData()).queue();
 
         System.out.println("Iniciado como: " + jda.getSelfUser().getName());
         System.out.println("Bot iniciado e comandos registrados automaticamente!");
