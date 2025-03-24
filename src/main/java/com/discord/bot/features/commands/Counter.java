@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.discord.bot.base.utils.Colors;
+import com.discord.bot.base.utils.CommandTranslationHelper;
 import com.discord.bot.services.translate.JsonTranslationService;
 
 public class Counter {
@@ -86,65 +87,14 @@ public class Counter {
     }
 
     public SlashCommandData getCommandData() throws IOException {
-        JsonTranslationService translation_en_us = new JsonTranslationService("en-us");
-        JsonTranslationService translation_pt_br = new JsonTranslationService("pt-br");
-        JsonTranslationService translation_es_es = new JsonTranslationService("es-es");
-    
-        // Comando principal
-        String name_en_us = translation_en_us.get("counter.name");
-        // Fallback to English if translation is missing or invalid
-        String name_pt_br = translation_pt_br.get("counter.name");
-        if (name_pt_br == null || name_pt_br.length() > 32) {
-            name_pt_br = name_en_us;
-        }
-        String name_es_es = translation_es_es.get("counter.name");
-        if (name_es_es == null || name_es_es.length() > 32) {
-            name_es_es = name_en_us;
-        }
-    
-        String description_en_us = translation_en_us.get("counter.description");
-        String description_pt_br = translation_pt_br.get("counter.description");
-        String description_es_es = translation_es_es.get("counter.description");
-    
-        // Opções
-        String optionName_en_us = translation_en_us.get("counter.options.max.name");
-        String optionName_pt_br = translation_pt_br.get("counter.options.max.name");
-        String optionName_es_es = translation_es_es.get("counter.options.max.name");
-    
-        String optionDesc_en_us = translation_en_us.get("counter.options.max.description");
-        String optionDesc_pt_br = translation_pt_br.get("counter.options.max.description");
-        String optionDesc_es_es = translation_es_es.get("counter.options.max.description");
-    
-        // Ensure all command names are valid
-        if (name_en_us == null || name_en_us.length() > 32) {
-            name_en_us = "counter"; // Default fallback
-        }
-    
-        return Commands.slash(name_en_us, description_en_us)
-            .setNameLocalizations(Map.of(
-                DiscordLocale.PORTUGUESE_BRAZILIAN, name_pt_br,
-                DiscordLocale.SPANISH, name_es_es
-            ))
-            .setDescriptionLocalizations(Map.of(
-                DiscordLocale.PORTUGUESE_BRAZILIAN, description_pt_br,
-                DiscordLocale.SPANISH, description_es_es
-            ))
-            .addOptions(new net.dv8tion.jda.api.interactions.commands.build.OptionData(
-                OptionType.INTEGER, 
-                optionName_en_us, 
-                optionDesc_en_us, 
-                false
-            )
-            .setNameLocalizations(Map.of(
-                DiscordLocale.PORTUGUESE_BRAZILIAN, optionName_pt_br,
-                DiscordLocale.SPANISH, optionName_es_es
-            ))
-            .setDescriptionLocalizations(Map.of(
-                DiscordLocale.PORTUGUESE_BRAZILIAN, optionDesc_pt_br,
-                DiscordLocale.SPANISH, optionDesc_es_es
-            ))
+        CommandTranslationHelper helper = new CommandTranslationHelper();
+        
+        SlashCommandData command = helper.buildCommand("counter", "counter");
+        helper.addOption(command, "counter.options.max", OptionType.INTEGER, false)
             .setMinValue(1)
-            .setMaxValue(15));
+            .setMaxValue(15);
+
+        return command;
     }
     
 
