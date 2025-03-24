@@ -1,0 +1,56 @@
+{
+    "placeholders": {
+        "user": "{user}",
+        "bot": "{bot}"
+    },
+    "hello": {
+        "name": "ola",
+        "description": "cumprimenta",
+        "subCommands": {
+            "world": {
+                "name": "mundo",
+                "description": "responde com olá mundo",
+                "response": "Olá, Mundo! 🌎",
+                "errors": {
+                    "no_permission": "Você não tem permissão para usar este comando."
+                }
+            },
+            "user": {
+                "name": "usuario",
+                "description": "Responde com olá ao usuário",
+                "response": "Olá! {user}",
+                "errors": {
+                    "no_permission": "Você não tem permissão para usar este comando."
+                }
+            },
+            "discord": {
+                "name": "discord",
+                "description": "responde com olá discord",
+                "response": "Olá, Discord!",
+                "errors": {
+                    "no_permission": "Você não tem permissão para usar este comando."
+                }
+            }
+        },
+        "defaultErrors": {
+            "no_permission": "Você não tem permissão para usar este comando."
+        }
+    },
+    "counter": {
+        "name": "contar",
+        "description": "contar até o máximo possivel",
+        "response": {
+            "title": "Contagem finalizada",
+            "description": "Número: **{formattedNumber}** ({abbreviatedNumber})\n Tempo: **{elapsedTime}**ms"
+        },
+        "options": {
+            "max": {
+                "name": "maximo",
+                "description": "Segundos para terminar a contagem"
+            }
+        }
+    },
+    "defaultErrors": {
+        "unknown_error": "Ocorreu um erro desconhecido."
+    }
+}

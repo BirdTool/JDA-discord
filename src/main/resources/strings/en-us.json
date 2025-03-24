@@ -1,0 +1,56 @@
+{
+    "placeholders": {
+        "user": "{user}",
+        "bot": "{bot}"
+    },
+    "hello": {
+        "name": "hello",
+        "description": "says hello",
+        "subCommands": {
+            "world": {
+                "name": "world",
+                "description": "says with hello world",
+                "response": "Hello, World! 🌎",
+                "errors": {
+                    "no_permission": "You don't have permission to use this command."
+                }
+            },
+            "discord": {
+                "name": "discord",
+                "description": "says with hello discord",
+                "response": "Hello, Discord!",
+                "errors": {
+                    "no_permission": "You don't have permission to use this command."
+                }
+            },
+            "user": {
+                "name": "user",
+                "description": "says hello to user",
+                "response": "Hello, {user}! ",
+                "errors": {
+                    "no_permission": "You don't have permission to use this command."
+                }
+            }
+        },
+        "defaultErrors": {
+            "no_permission": "You don't have permission to use this command."
+        }
+    },
+    "counter": {
+        "name": "counter",
+        "description": "count as high as possible",
+        "response": {
+            "title": "Counter finalized",
+            "description": "Number: **{formattedNumber}** ({abbreviatedNumber})\n Time: **{elapsedTime}**ms"
+        },
+        "options": {
+            "max": {
+                "name": "maximum",
+                "description": "Seconds to end counting"
+            }
+        }
+    },
+    "defaultErrors": {
+        "unknown_error": "An unknown error occurred."
+    }
+}

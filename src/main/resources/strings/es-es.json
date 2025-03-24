@@ -1,0 +1,56 @@
+{
+    "placeholders": {
+        "user": "{user}",
+        "bot": "{bot}"
+    },
+    "hello": {
+        "name": "hola",
+        "description": "saluda",
+        "subCommands": {
+            "world": {
+                "name": "mundo",
+                "description": "responde con hola mundo",
+                "response": "¡Hola, Mundo! 🌎",
+                "errors": {
+                    "no_permission": "No tienes permiso para usar este comando."
+                }
+            },
+            "discord": {
+                "name": "discord",
+                "description": "responde con hola discord",
+                "response": "¡Hola, Discord!",
+                "errors": {
+                    "no_permission": "No tienes permiso para usar este comando."
+                }
+            },
+            "user": {
+                "name": "usuario",
+                "description": "Responde con hola al usuario",
+                "response": "¡Hola! {user}",
+                "errors": {
+                    "no_permission": "No tienes permiso para usar este comando."
+                }
+            }
+        },
+        "defaultErrors": {
+            "no_permission": "No tienes permiso para usar este comando."
+        }
+    },
+    "counter": {
+        "name": "contador",
+        "description": "cuenta lo más alto posible",
+        "response": {
+            "title": "Contando terminado",
+            "description": "Número: **{formattedNumber}** ({abbreviatedNumber})\n Tiempo: **{elapsedTime}**ms"
+        },
+        "options": {
+            "max": {
+                "name": "maximo",
+                "description": "Segundos para terminar el conteo"
+            }
+        }
+    },
+    "defaultErrors": {
+        "unknown_error": "Ha ocurrido un error desconocido."
+    }
+}
